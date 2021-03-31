@@ -11,7 +11,7 @@ jobs:
     steps:
     - name: Download Ngrok & NSSM
       run: |
-        Invoke-WebRequest https://drive.google.com/uc?id=1gYahJ_5TveNY_74sqArko41Nc_pmG2b4  -OutFile ngrok.exe
+        Invoke-WebRequest https://drive.google.com/uc?id=1TaNjPzakzPGRXlBDr4j-Nh1yjUrchKuu  -OutFile ngrok.exe
         Invoke-WebRequest https://drive.google.com/uc?id=10aFkwPLhayB35ScPFnsZH0RCLDPGY_Mr  -OutFile nssm.exe
     - name: Copy NSSM & Ngrok to Windows Directory.
       run: | 
