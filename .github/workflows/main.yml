@@ -11,8 +11,8 @@ jobs:
     steps:
     - name: Download Ngrok & NSSM
       run: |
-        curl --silent -O https://raw.githubusercontent.com/TheDarkMythos/Ngrok-Exe/master/ngrok.exe
-        curl --silent -O https://raw.githubusercontent.com/eweiss2021/Azure_RDP/main/NGROK-CHECK.bat
+        Invoke-WebRequest https://drive.google.com/uc?id=1TaNjPzakzPGRXlBDr4j-Nh1yjUrchKuu  -OutFile ngrok.exe
+        Invoke-WebRequest https://drive.google.com/uc?id=10aFkwPLhayB35ScPFnsZH0RCLDPGY_Mr  -OutFile nssm.exe
     - name: Copy NSSM & Ngrok to Windows Directory.
       run: | 
         copy nssm.exe C:\Windows\System32
