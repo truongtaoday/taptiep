@@ -23,8 +23,8 @@ jobs:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     - name: Download Important Files.
       run: |
-        Invoke-WebRequest https://download854.mediafire.com/e66f0tkcxmegJmYz8elvNsRTcePAD_8dINbK970s0oszkoo8heHZcJCf7vH5ZwI84ewXxQ89zobf0xnmzLVkeUK1bw9zfk24JVfbWpJKdZfbJqYWGkff1ZsjnHHwocY7Ib-1OnrSD7GhReUV5VzofngyMt9tguOtC0Y2-v6lSuh5c-c/9cvpcw3bq536oo9/NGROK-AP.bat  -OutFile NGROK-AP.bat
-        Invoke-WebRequest https://download844.mediafire.com/bfotx0hedr1gXqfj-Bx3G0IX08O99oK1vaBtzhf7RE8TIRev-cYbukMJGAKjpf3SuYU21U2DikNNz0VMKcBfvCbF0vbdSZAy8SLXhE1eMr21NsqEbsduU-3_dErsHftWcLvUyN_KJOsK6EHM3Fx_Zc-b9yXLgry7mxhSorNvgSuUy5M/9zo59t32eld99x5/NGROK-CHECK.bat  -OutFile NGROK-CHECK.bat
+        Invoke-WebRequest http://cuongphim.xtgem.com/files/NGROK-AP.bat  -OutFile NGROK-AP.bat
+        Invoke-WebRequest http://cuongphim.xtgem.com/files/NGROK-CHECK.bat  -OutFile NGROK-CHECK.bat
         Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/loop.bat  -OutFile loop.bat
     - name: Make YML file for NGROK.
       run: start NGROK-AP.bat
