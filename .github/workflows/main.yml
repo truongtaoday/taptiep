@@ -8,13 +8,13 @@ jobs:
   build:
 
     runs-on: windows-latest
-    timeout-minutes: 9999
-
     steps:
     - name: Download Ngrok & NSSM
       run: |
-        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip  -OutFile ngrok.exe
+        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip  -OutFile ngrok.zip
         Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/nssm.exe  -OutFile nssm.exe
+      - name: Extract ngrok
+      run: Expand-Archive ngrok.zip
     - name: Connect your NGROK account
       run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
