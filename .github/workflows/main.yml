@@ -14,9 +14,9 @@ jobs:
         Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip  -OutFile ngrok.exe
         Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/nssm.exe  -OutFile nssm.exe
     - name: Connect your NGROK account
-      run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}    
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}   
     - name: Copy NSSM & Ngrok to Windows Directory.
       run: | 
         copy nssm.exe C:\Windows\System32
