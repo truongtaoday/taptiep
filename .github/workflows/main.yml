@@ -25,11 +25,7 @@ jobs:
       run: Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
     - name: Make YML file for NGROK.
       run: start NGROK-CHECK.bat  # Assuming the script creates the YML file
-    - name: Ra IP  # Removed unnecessary quotation marks
-      run: cmd /c echo curl \
-                 -X GET \
-                 -H "Authorization: Bearer {2ckdNzMY8d6emoZXRasCI7LRj4M_7LLZiEq4VJT8yDVLQdhZL}" \
-                 -H "Ngrok-Version: 2" \
-                 https://api.ngrok.com/tunnel_sessions
+    - name: 
+      run: cmd /c echo IP: tasklist | find /i "ngrok.exe" >Nul && curl -s localhost:4040/api/tunnels | jq -r .tunnels[0].public_url |
     - name: Create ngrok tunnel to remote desktop
       run: .\ngrok\ngrok.exe tcp 3389
