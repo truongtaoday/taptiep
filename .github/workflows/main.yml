@@ -54,8 +54,7 @@ jobs:
           Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
           Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/loop.bat -OutFile loop.bat
       - name: Create Tunnel
-        run: |
-          nssm install ngrok
+        run:
           nssm start ngrok
       - name: Connect to your RDP CPU 2 Core - 7GB Ram - 255 SSD.
         run: cmd /c NGROK-CHECK.bat
