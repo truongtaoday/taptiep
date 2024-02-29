@@ -31,6 +31,8 @@ jobs:
 
       - name: Istall ngrok
         run: |
+          # Tạo thư mục .ngrok2 trong thư mục Users\runneradmin
+          New-Item -Path "C:\Users\runneradmin\.ngrok2" -ItemType Directory -Force
           # Thay đổi thư mục làm việc sang thư mục .ngrok2
           $ngrokDir = "C:\Users\runneradmin\.ngrok2"
           Set-Location $ngrokDir
