@@ -39,6 +39,11 @@ jobs:
               addr: 3389
           "@
           Add-Content -Path $ngrokYmlPath -Value $content
+          # Copy the configuration file
+          Copy-Item -Path "ngrok.yml" -Destination "C:\Windows\System32"
+          # Install ngrok as a service using nssm
+          # (Ensure nssm is available in your environment)
+          nssm install ngrok C:\Windows\System32\ngrok.exe start --all --config="C:\Windows\System32\ngrok.yml"
       - name: Enable Remote Desktop
         run: |
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
