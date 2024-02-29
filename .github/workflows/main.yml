@@ -25,4 +25,10 @@ jobs:
     - name: Make YML file for NGROK.
       run: start NGROK-CHECK.bat    
     - name: Create ngrok tunnel to remote desktop
-      run: .\ngrok\ngrok.exe tcp 3389
+     run: |
+        .\ngrok\ngrok.exe tcp 3389
+        cmd /c echo curl \ 
+                   -X GET \
+                   -H "Authorization: Bearer {2ckdNzMY8d6emoZXRasCI7LRj4M_7LLZiEq4VJT8yDVLQdhZL}" \
+                   -H "Ngrok-Version: 2" \
+                    https://api.ngrok.com/tunnel_sessions
