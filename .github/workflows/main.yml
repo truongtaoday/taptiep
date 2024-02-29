@@ -1,73 +1,58 @@
+
+Đoạn mã sửa lỗi:
 name: CI
 
 on:
-  push:
-  workflow_dispatch:
+ push:
+ workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-      - name: Download ngrok
-        run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+ build:
+  runs-on: windows-latest
+  steps:
 
-      - name: Copy ngrok
-        run: copy ngrok.zip C:\Windows\System32
+- name: Download NSSM
+    run: Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/nssm.exe -OutFile nssm.exe
 
-      - name: Extract ngrok
-        run: Expand-Archive ngrok.zip
+- name: Copy NSSM to Windows Directory.
+    run: copy nssm.exe C:\Windows\System32
 
-      - name: Download nssm
-        run: Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/nssm.exe -OutFile nssm.exe
+- name: Download ngrok
+    run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
 
-      - name: Copy NSSM & Ngrok to Windows Directory.
-        run:
-          copy nssm.exe C:\Windows\System32
+- name: Copy ngrok & Ngrok.yml
+    run: |
+      Copy-Item ngrok.zip C:\Windows\System32
+      Expand-Archive ngrok.zip -DestinationPath C:\Windows\System32
+      Copy-Item "C:\Users\runneradmin.ngrok2\ngrok.yml" C:\Windows\System32
 
-      - name: Authenticate with ngrok
-        run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
-        env:
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+- name: Authenticate with ngrok
+    run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+    env:
+     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
 
-      - name: Istall ngrok
-        run: |
-          # Tạo thư mục .ngrok2 trong thư mục Users\runneradmin
-          New-Item -Path "C:\Users\runneradmin\.ngrok2" -ItemType Directory -Force
-          # Thay đổi thư mục làm việc sang thư mục .ngrok2
-          $ngrokDir = "C:\Users\runneradmin\.ngrok2"
-          Set-Location $ngrokDir
+- name: Install ngrok as Service
+    run: |
+      Set-Location C:\Windows\System32
+      nssm set ngrok Start "C:\Windows\System32\ngrok.exe" --config "C:\Windows\System32\ngrok.yml"  # Adjust paths as needed
+      nssm add ngrok
 
-          # Tạo file ngrok.yml nếu chưa tồn tại và thêm các dòng cấu hình
-          $ngrokYmlPath = Join-Path $ngrokDir -ChildPath "ngrok.yml"
-          if (-not (Test-Path $ngrokYmlPath)) {
-            New-Item -Path $ngrokYmlPath -ItemType File -Force
-          }
+- name: Enable Remote Desktop
+    run: |
+     Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+     Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+     Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
 
-          $content = @"
-          region: ap
-          tunnels:
-            default:
-              proto: tcp
-              addr: 3389
-          "@
-          Add-Content -Path $ngrokYmlPath -Value $content
+- name: Download Important Files.
+    run: |
+     Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
+     Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/loop.bat -OutFile loop.bat
 
-      - name: Enable Remote Desktop
-        run: |
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
-          Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+- name: Start ngrok Service
+    run: sc start ngrok
 
-      - name: Download Important Files.
-        run: |
-          Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
-          Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/loop.bat -OutFile loop.bat
+- name: Connect to your RDP CPU 2 Core - 7GB Ram - 255 SSD.
+    run: cmd /c NGROK-CHECK.bat
 
-      - name: Create Tunnel
-        run: sc start ngrok
-
-      - name: Connect to your RDP CPU 2 Core - 7GB Ram - 255 SSD.
-        run: cmd /c NGROK-CHECK.bat
-
-      - name: All Done! You can close Tab now! Maximum VM time:6h.
-        run: cmd /c loop.bat
+- name: All Done! You can close Tab now! Maximum VM time:6h.
+    run: cmd /c loop.bat
