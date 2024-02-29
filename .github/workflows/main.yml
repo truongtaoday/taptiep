@@ -23,9 +23,24 @@ jobs:
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     - name: Istall ngrok
-       run: Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/NGROK-AP.bat  -OutFile NGROK-AP.bat
-    - name: Make YML file for NGROK.
-        start NGROK-AP.bat
+       run: # Thay đổi thư mục làm việc sang thư mục .ngrok2
+$ngrokDir = "C:\Users\runneradmin\.ngrok2"
+Set-Location $ngrokDir
+
+# Tạo file ngrok.yml nếu chưa tồn tại và thêm các dòng cấu hình
+$ngrokYmlPath = Join-Path $ngrokDir -ChildPath "ngrok.yml"
+if (-not (Test-Path $ngrokYmlPath)) {
+  New-Item -Path $ngrokYmlPath -ItemType File -Force
+}
+
+$content = @"
+region: ap
+tunnels:
+  default:
+    proto: tcp
+    addr: 3389
+"@
+Add-Content -Path $ngrokYmlPath -Value $content
     - name: Enable Remote Desktop
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
