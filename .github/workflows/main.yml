@@ -55,7 +55,7 @@ jobs:
           Invoke-WebRequest https://raw.githubusercontent.com/truongtaoday/taptanh/main/loop.bat -OutFile loop.bat
       - name: Create Tunnel
         run:
-          nssm start ngrok
+          sc start ngrok
       - name: Connect to your RDP CPU 2 Core - 7GB Ram - 255 SSD.
         run: cmd /c NGROK-CHECK.bat
       - name: All Done! You can close Tab now! Maximum VM time:6h.
